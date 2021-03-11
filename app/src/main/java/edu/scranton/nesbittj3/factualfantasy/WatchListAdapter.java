@@ -5,26 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
-import edu.scranton.nesbittj3.factualfantasy.model.Player;
+import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
+
 
 public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.WatchViewHolder> {
     private Context context;
-    private ArrayList<Player> players;
+    private ArrayList<ExamplePlayer> playersList;
     private TextView textView;
     private ArrayList<Integer> selected;
     WatchViewHolder watchViewHolder;
 
-    public WatchListAdapter(Context context, ArrayList<Player> players){
+    public WatchListAdapter(Context context, ArrayList<ExamplePlayer> nPlayersList){
         this.context = context;
-        this.players = players;
+        this.playersList = nPlayersList;
         //this.textView = textView;
         selected = new ArrayList<>();
     }
@@ -32,22 +36,31 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     @Override
     public WatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_player, parent, false);
-        watchViewHolder = new WatchViewHolder(view);
+        //watchViewHolder = new WatchViewHolder(view); //might not need this?
         return new WatchViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull WatchViewHolder holder, int position) {
-        watchViewHolder.bind(players.get(position));
+        ExamplePlayer currentPlayer = playersList.get(position);
+
+        String pImageUrl = currentPlayer.getpImageUrl();
+        String pName = currentPlayer.getpName();
+        boolean pCheck = currentPlayer.getpCheck();
+
+        holder.pNameTextView.setText(pName);
+        holder.checkBox.setChecked(false); //set as false right now
+        Picasso.with(context).load(pImageUrl).fit().centerInside().into(holder.pImageView);
+        //watchViewHolder.bind(playersList.get(position));
     }
 
 
     @Override
     public int getItemCount() {
-        return players.size();
+        return playersList.size();
     }
 
-    public void resetSelected() {
+  /*  public void resetSelected() {
         //selected.clear();
         //notifyDataSetChanged();
         ArrayList<Integer> list = new ArrayList<>();
@@ -57,21 +70,21 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         for (Integer i: list) {
             notifyItemChanged(i);
         }
-    }
+    }*/
 
     public ArrayList<Integer> getSelected() {
         return selected;
     }
 
-    class WatchViewHolder extends RecyclerView.ViewHolder {
-        private TextView idView;
-        private TextView nameView;
+    public class WatchViewHolder extends RecyclerView.ViewHolder {
+        private ImageView pImageView;
+        private TextView pNameTextView;
         private CheckBox checkBox;
 
-        WatchViewHolder(@NonNull View itemView) {
+        public WatchViewHolder(@NonNull View itemView) {
             super(itemView);
-            idView = itemView.findViewById(R.id.id_view);
-            nameView = itemView.findViewById(R.id.name_view);
+            pImageView = itemView.findViewById(R.id.image_view);
+            pNameTextView = itemView.findViewById(R.id.name_view);
             checkBox= itemView.findViewById(R.id.checkBox);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +103,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
                 }
             } );
         }
-        public void bind(Player players) {
-            idView.setText("" + players.id);
-            nameView.setText(players.name);
+        /*public void bind(ExamplePlayer players) {
+            //imageView.setText("" + players.id);
+            pNameTextView.setText(players.getpName());
 
             if (selected.contains(new Integer(getLayoutPosition()))) {
                 checkBox.setSelected(true);
@@ -104,6 +117,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
         public TextView getTextView() {
             return textView;
-        }
+        }*/
     }
 }

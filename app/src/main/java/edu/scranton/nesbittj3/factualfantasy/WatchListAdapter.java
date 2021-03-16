@@ -1,5 +1,5 @@
 package edu.scranton.nesbittj3.factualfantasy;
-
+import android.content.Intent;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,11 +46,15 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
         String pImageUrl = currentPlayer.getpImageUrl();
         String pName = currentPlayer.getpName();
+        String pTeam = currentPlayer.getpTeam();
         boolean pCheck = currentPlayer.getpCheck();
 
         holder.pNameTextView.setText(pName);
+        holder.pTeamTextView.setText(pTeam);
         holder.checkBox.setChecked(false); //set as false right now
-        Picasso.with(context).load(pImageUrl).fit().centerInside().into(holder.pImageView);
+        //String pImageUrl = "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3122840.png&w=350&h=254";
+        Picasso.with(context).load(pImageUrl).into(holder.pImageView);
+
         //watchViewHolder.bind(playersList.get(position));
     }
 
@@ -79,12 +83,14 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     public class WatchViewHolder extends RecyclerView.ViewHolder {
         private ImageView pImageView;
         private TextView pNameTextView;
+        private TextView pTeamTextView;
         private CheckBox checkBox;
 
         public WatchViewHolder(@NonNull View itemView) {
             super(itemView);
             pImageView = itemView.findViewById(R.id.image_view);
             pNameTextView = itemView.findViewById(R.id.name_view);
+            pTeamTextView = itemView.findViewById(R.id.team_view);
             checkBox= itemView.findViewById(R.id.checkBox);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -103,20 +109,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
                 }
             } );
         }
-        /*public void bind(ExamplePlayer players) {
-            //imageView.setText("" + players.id);
-            pNameTextView.setText(players.getpName());
 
-            if (selected.contains(new Integer(getLayoutPosition()))) {
-                checkBox.setSelected(true);
-            }
-            else {
-                checkBox.setSelected(false);
-            }
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }*/
     }
 }

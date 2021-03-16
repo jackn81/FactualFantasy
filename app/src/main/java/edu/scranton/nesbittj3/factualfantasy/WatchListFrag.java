@@ -56,52 +56,16 @@ public class WatchListFrag extends Fragment {
         //recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
-        //temporary just to test
-        //playersList = new ArrayList<>();
 
-        //pRequestQueue = Volley.newRequestQueue(context);
-        //parseJSON();
+        playersList = new ArrayList<>();
 
-        createItems();
-        //ExamplePlayer examplePlayer = new ExamplePlayer(null, null, false);
-        //examplePlayer.setpName("Deshaun Watson");
-        //playersList.add(examplePlayer);
+
         adapter = new WatchListAdapter(context, playersList);
         recyclerView.setAdapter(adapter);
         Content content = new Content();
         content.execute();
 
-        /*getActivity().runOnUiThread(new Runnable()
-        {
-            ExamplePlayer examplePlayer = new ExamplePlayer("Deshaun Watson", null, false);
 
-            @Override
-            public void run() {
-                try {
-                    Document doc = (Document) Jsoup.connect("https://www.espn.com/nfl/stats/player/_/table/passing/sort/passingYards/dir/desc")
-                            .timeout(6000).get();
-
-                    Element pNames = (Element) doc.getElementById("s:20~1:28~a:3122840"); // deshaun watson name ID
-                    //examplePlayer.setpName(pNames.text());
-                    examplePlayer.setpName("Deshaun Watson");
-                    playersList.add(examplePlayer);
-
-
-                } catch (Exception e) {
-                    getActivity().runOnUiThread(new Runnable(){
-                        @Override
-                        public void run(){
-
-                        }
-                    });
-                }
-            }
-
-        });*/
-        //adapter = new WatchListAdapter(context, playersList);
-        //recyclerView.setAdapter(adapter);
-        //adapter.notifyDataSetChanged();
-        //recyclerView.setAdapter(adapter);
 
         return view;
 
@@ -112,12 +76,7 @@ public class WatchListFrag extends Fragment {
         String url = "";
     }
 
-    private void createItems() {
-        playersList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            playersList.add(new ExamplePlayer(null, "player-",  false));
-        }
-    }
+
 
     public void onSelect(View view) {
         ArrayList<Integer> selected = adapter.getSelected();
@@ -136,20 +95,33 @@ public class WatchListFrag extends Fragment {
 
 
                 Elements data = doc.select("td.Table__TD");
-                //Elements data2 = doc.select("h1.Image__Wrapper"); //Image__Wrapper--relative
+
                 int size = data.size();
 
-                for(int i = 0; i< size; i ++){
-                    /*String imgUrl = data.select("h1.Image__Wrapper") // Image__Wrapper--relative
-                            .select("img")
-                            .eq(i)
-                            .attr("alt");*/
+                for(int i = 0; i< 50; i ++){
+
                     String athleteName = data.select("a.AnchorLink")
                             .select("a")
                             .eq(i)
                             .text();
-                    playersList.add(new ExamplePlayer(null, athleteName, false));
-                    //Log.d("items", "name: " + athleteName );
+
+                    String athleteID = data.select("a.AnchorLink")          //this is working, now
+                            .select("a")                                    //we just need the
+                            .eq(i)                                          //end of the string
+                            .attr("data-player-uid");
+
+                    String athleteTeam = data.select("span.pl2.n10.athleteCell__teamAbbrev")
+                            .select("span")
+                            .eq(i)
+                            .text();
+
+                    athleteID = athleteID.substring(12);       //extracts ESPN's ID for a player
+
+                    String imgURL = "https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players"+
+                            "/full/" + athleteID + ".png&w=350&h=254";
+
+                    playersList.add(new ExamplePlayer(imgURL, athleteName, athleteTeam, athleteID, false));
+                    Log.d("image", "url: " + imgURL );
                 }
             }catch(IOException e){
                 e.printStackTrace();;

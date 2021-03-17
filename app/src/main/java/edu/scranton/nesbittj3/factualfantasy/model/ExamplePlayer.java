@@ -5,15 +5,17 @@ public class ExamplePlayer {
 
     private String pImageUrl;
     private String pName;
-    private String pId;
     private String pTeam;
+    private String pPosition;
+    private String pId;
     private boolean pCheck;
 
-    public ExamplePlayer(String imageUrl, String name, String team, String id, boolean check){
+    public ExamplePlayer(String imageUrl, String name, String team, String position, String id, boolean check){
         pImageUrl = imageUrl;
         pName = name;
-        pId = id;
         pTeam = team;
+        pPosition = position;
+        pId = id;
         pCheck = check;
     }
 
@@ -53,5 +55,13 @@ public class ExamplePlayer {
 
     public void setpTeam(String pTeam) {
         this.pTeam = pTeam;
+    }
+
+    public String getpPosition() {
+        return pPosition;
+    }
+
+    public void setpPosition(String pPosition) {
+        this.pPosition = pPosition;
     }
 }

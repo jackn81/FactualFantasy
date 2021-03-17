@@ -18,14 +18,15 @@ import java.util.ArrayList;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 
-public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.WatchViewHolder> {
+public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder> {
     private Context context;
     private ArrayList<ExamplePlayer> playersList;
+    private ArrayList<ExamplePlayer> watchList;
     private TextView textView;
     private ArrayList<Integer> selected;
     WatchViewHolder watchViewHolder;
 
-    public WatchListAdapter(Context context, ArrayList<ExamplePlayer> nPlayersList){
+    public PassListAdapter(Context context, ArrayList<ExamplePlayer> nPlayersList){
         this.context = context;
         this.playersList = nPlayersList;
         //this.textView = textView;
@@ -92,7 +93,12 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
                     int position = getLayoutPosition();
                     CheckBox c = (CheckBox)v;
                     if (c.isChecked()) {
+                        //ExamplePlayer currentPlayer = playersList.get(position);
                         selected.add(position);
+                        //watchList.add(new ExamplePlayer(currentPlayer.getpImageUrl(), currentPlayer.getpName(),
+                        //        currentPlayer.getpTeam(), currentPlayer.getpPosition(), currentPlayer.getpId(), false));
+
+                        //now add player to db
                         Toast.makeText(context, "Checked: " + selected, Toast.LENGTH_LONG).show();
                     }
                     else {
@@ -105,4 +111,3 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
     }
 }
-

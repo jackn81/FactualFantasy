@@ -10,6 +10,11 @@
     <FrameLayout
         android:id="@+id/container_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="320dp" />
+
+    <FrameLayout
+        android:id="@+id/container_b"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

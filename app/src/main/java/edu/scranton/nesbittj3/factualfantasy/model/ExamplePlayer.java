@@ -1,14 +1,33 @@
 package edu.scranton.nesbittj3.factualfantasy.model;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import androidx.room.Entity;
+import androidx.room.TypeConverter;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+@Entity(tableName = "player_table")
 public class ExamplePlayer {
+    @PrimaryKey (autoGenerate = true) @NonNull
+    public int autoID;
+    public String pImageUrl;
 
+    public String pName;
+    public String pTeam;
+    public String pPosition;
 
-    private String pImageUrl;
-    private String pName;
-    private String pTeam;
-    private String pPosition;
-    private String pId;
-    private boolean pCheck;
+    public String pId;
+    public boolean pCheck;
+
+    public ExamplePlayer(){
+
+    }
 
     public ExamplePlayer(String imageUrl, String name, String team, String position, String id, boolean check){
         pImageUrl = imageUrl;
@@ -65,3 +84,19 @@ public class ExamplePlayer {
         this.pPosition = pPosition;
     }
 }
+
+/*class Converters {
+    @TypeConverter
+    public static ArrayList<String> fromString(String value) {
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        return new Gson().fromJson(value, listType);
+    }
+
+    @TypeConverter
+    public static String fromArrayList(ArrayList<String> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
+    }
+}*/
+

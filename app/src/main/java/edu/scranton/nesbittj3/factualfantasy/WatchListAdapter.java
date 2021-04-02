@@ -14,18 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 
 public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.WatchViewHolder> {
     private Context context;
-    private ArrayList<ExamplePlayer> playersList;
+    private List<ExamplePlayer> playersList;
     private TextView textView;
     private ArrayList<Integer> selected;
     WatchViewHolder watchViewHolder;
 
-    public WatchListAdapter(Context context, ArrayList<ExamplePlayer> nPlayersList){
+    public WatchListAdapter(Context context, List<ExamplePlayer> nPlayersList){
         this.context = context;
         this.playersList = nPlayersList;
         //this.textView = textView;
@@ -34,13 +35,14 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     @NonNull
     @Override
     public WatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_player, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.watch_list_frag, parent, false);
         //watchViewHolder = new WatchViewHolder(view); //might not need this?
         return new WatchViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull WatchViewHolder holder, int position) {
+
         ExamplePlayer currentPlayer = playersList.get(position);
 
         String pImageUrl = currentPlayer.getpImageUrl();
@@ -56,7 +58,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
         Picasso.with(context).load(pImageUrl).into(holder.pImageView);
 
-
     }
 
 
@@ -65,9 +66,26 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         return playersList.size();
     }
 
+    public void setPlayersList(List<ExamplePlayer> players){
+        this.playersList = players;
+        notifyDataSetChanged();
+    }
+
 
     public ArrayList<Integer> getSelected() {
         return selected;
+    }
+
+    public Boolean containsPlayer(ExamplePlayer player){
+        Boolean result = false;
+        for(int i = 0; i<playersList.size(); i++){
+            if(playersList.contains(player)){
+                result = true;
+            }else {
+                result = false;
+            }
+        }
+        return result;
     }
 
     public class WatchViewHolder extends RecyclerView.ViewHolder {
@@ -86,21 +104,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
             checkBox= itemView.findViewById(R.id.checkBox);
 
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getLayoutPosition();
-                    CheckBox c = (CheckBox)v;
-                    if (c.isChecked()) {
-                        selected.add(position);
-                        Toast.makeText(context, "Checked: " + selected, Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        selected.remove(new Integer(position));
-                        Toast.makeText(context, "UnChecked: " + selected, Toast.LENGTH_LONG).show();
-                    }
-                }
-            } );
         }
 
     }

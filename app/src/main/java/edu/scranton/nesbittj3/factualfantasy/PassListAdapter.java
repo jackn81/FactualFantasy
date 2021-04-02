@@ -14,22 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
+import java.util.List;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 
 public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder> {
     private Context context;
-    private ArrayList<ExamplePlayer> playersList;
-    private ArrayList<ExamplePlayer> watchList;
+    private List<ExamplePlayer> playersList;
+    private List<ExamplePlayer> watchList;
     private TextView textView;
     private ArrayList<Integer> selected;
     WatchViewHolder watchViewHolder;
 
-    public PassListAdapter(Context context, ArrayList<ExamplePlayer> nPlayersList){
+    public PassListAdapter(Context context, List<ExamplePlayer> nPlayersList){
         this.context = context;
         this.playersList = nPlayersList;
-        //this.textView = textView;
         selected = new ArrayList<>();
     }
     @NonNull
@@ -66,10 +65,63 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
         return playersList.size();
     }
 
+    public void setPlayersList(List<ExamplePlayer> players){
+        this.playersList = players;
+        notifyDataSetChanged();
+    }
+
 
     public ArrayList<Integer> getSelected() {
         return selected;
     }
+
+    public void clearSelected(){
+        selected.clear();
+    }
+
+    public Boolean containsPlayer(ExamplePlayer player){
+        Boolean result = false;
+        for(int i = 0; i<playersList.size(); i++){
+            if(playersList.contains(player)){
+                result = true;
+            }else {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public ExamplePlayer getPlayer(int position){
+        return playersList.get(position);
+    }
+
+    public String getPlayerName(int position){
+        ExamplePlayer currentPlayer = playersList.get(position);
+        return currentPlayer.getpName();
+    }
+
+    public String getPlayerUrl(int position){
+        ExamplePlayer currentPlayer = playersList.get(position);
+        return currentPlayer.getpImageUrl();
+    }
+
+    public String getPlayerTeam(int position){
+        ExamplePlayer currentPlayer = playersList.get(position);
+        return currentPlayer.getpTeam();
+    }
+
+    public String getPlayerPos(int position){
+        ExamplePlayer currentPlayer = playersList.get(position);
+        return currentPlayer.getpPosition();
+    }
+
+    public String getPlayerId(int position){
+        ExamplePlayer currentPlayer = playersList.get(position);
+        return currentPlayer.getpId();
+    }
+
+
+
 
     public class WatchViewHolder extends RecyclerView.ViewHolder {
         private ImageView pImageView;
@@ -93,13 +145,13 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
                     int position = getLayoutPosition();
                     CheckBox c = (CheckBox)v;
                     if (c.isChecked()) {
-                        //ExamplePlayer currentPlayer = playersList.get(position);
+                        ExamplePlayer currentPlayer = playersList.get(position);
                         selected.add(position);
-                        //watchList.add(new ExamplePlayer(currentPlayer.getpImageUrl(), currentPlayer.getpName(),
-                        //        currentPlayer.getpTeam(), currentPlayer.getpPosition(), currentPlayer.getpId(), false));
+                        //watchList.add(currentPlayer);
+
 
                         //now add player to db
-                        Toast.makeText(context, "Checked: " + selected, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "Checked: " + selected, Toast.LENGTH_LONG).show();
                     }
                     else {
                         selected.remove(new Integer(position));

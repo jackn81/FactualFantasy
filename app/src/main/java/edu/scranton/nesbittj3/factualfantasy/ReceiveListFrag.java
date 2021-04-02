@@ -52,11 +52,12 @@ public class ReceiveListFrag extends Fragment {
 
         //recyclerView Stuff
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
         playersList = new ArrayList<>();
+
 
 
         adapter = new PassListAdapter(context, playersList);
@@ -67,11 +68,7 @@ public class ReceiveListFrag extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment watchListFrag = WatchListFrag.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container_main, watchListFrag, "watchListFrag" )
-                        .addToBackStack(null)
-                        .commit();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -84,6 +81,12 @@ public class ReceiveListFrag extends Fragment {
         String url = "";
     }
 
+    public void createItems() {
+        playersList = new ArrayList<>();
+        for (int i = 0; i < 1; i++) {
+            playersList.add(new ExamplePlayer(null, "player-", null, null, null, false));
+        }
+    }
 
 
     public void onSelect(View view) {

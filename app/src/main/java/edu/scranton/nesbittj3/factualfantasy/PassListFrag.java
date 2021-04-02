@@ -1,6 +1,7 @@
 package edu.scranton.nesbittj3.factualfantasy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,16 +25,19 @@ import com.android.volley.RequestQueue;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
+import java.util.List;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class PassListFrag extends Fragment {
     private RecyclerView recyclerView;
     private PassListAdapter adapter;
-    private ArrayList<ExamplePlayer> playersList;
-    private RequestQueue pRequestQueue;
-    private TextView textView;
+    private List<ExamplePlayer> playersList;
+    private PlayerViewModel viewModel;
+
+
 
     public static PassListFrag newInstance() {
         return new PassListFrag();
@@ -48,33 +54,51 @@ public class PassListFrag extends Fragment {
         Button back = (Button) view.findViewById(R.id.back);
         //variable declarations
 
-        //retrofit stuff?
-
-        //recyclerView Stuff
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
+
         playersList = new ArrayList<>();
 
-
+        viewModel = new ViewModelProvider(this.getActivity()).get(PlayerViewModel.class);
         adapter = new PassListAdapter(context, playersList);
         recyclerView.setAdapter(adapter);
+
         Content content = new Content();
         content.execute();
+
+        adapter.notifyDataSetChanged();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment watchListFrag = WatchListFrag.newInstance();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container_main, watchListFrag, "watchListFrag" )
-                        .addToBackStack(null)
-                        .commit();
+                ArrayList<Integer> selected = adapter.getSelected();
+
+
+                int size = selected.size();
+                for(int i = 0; i<size; i++){
+                    ExamplePlayer targetPlayer = new ExamplePlayer();
+                    String playerIMG = adapter.getPlayerUrl(selected.get(i));
+                    String playerName = adapter.getPlayerName(selected.get(i));
+                    String playerTeam = adapter.getPlayerTeam(selected.get(i));
+                    String playerPos = adapter.getPlayerPos(selected.get(i));
+                    String playerId = adapter.getPlayerId(selected.get(i));
+                    targetPlayer.setpImageUrl(playerIMG);
+                    targetPlayer.setpName(playerName);
+                    targetPlayer.setpTeam(playerTeam);
+                    targetPlayer.setpPosition(playerPos);
+                    targetPlayer.setpId(playerId);
+                    targetPlayer.setpCheck(false);
+                    viewModel.insert(targetPlayer);
+                    Toast.makeText(getContext(), "Checked: " + playerName, Toast.LENGTH_LONG).show();
+
+                }
+                adapter.clearSelected();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-
 
 
         return view;
@@ -87,11 +111,10 @@ public class PassListFrag extends Fragment {
     }
 
 
-
     public void onSelect(View view) {
         ArrayList<Integer> selected = adapter.getSelected();
-        textView.setText("You Selected: " + selected.toString());
-        //adapter.resetSelected();
+        Toast.makeText(this.getContext(), "Checked: " + selected, Toast.LENGTH_LONG).show();
+
     }
 
     private class Content extends AsyncTask<Void, Void, Void>{
@@ -136,7 +159,7 @@ public class PassListFrag extends Fragment {
                             "/full/" + athleteID + ".png&w=350&h=254";
 
                     playersList.add(new ExamplePlayer(imgURL, athleteName, athleteTeam, athletePosition, athleteID, false));
-                    Log.d("image", "url: " + imgURL );
+
                 }
             }catch(IOException e){
                 e.printStackTrace();;
@@ -159,6 +182,9 @@ public class PassListFrag extends Fragment {
         protected void onCancelled() {
             super.onCancelled();
         }
+
+
     }
+
 
 }

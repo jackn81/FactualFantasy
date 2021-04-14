@@ -1,14 +1,21 @@
 package edu.scranton.nesbittj3.factualfantasy;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -18,17 +25,21 @@ import java.util.List;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 
-public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder> {
+public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder>  {
     private Context context;
     private List<ExamplePlayer> playersList;
-    private List<ExamplePlayer> watchList;
+    //private List<ExamplePlayer> playerListFull;
     private TextView textView;
     private ArrayList<Integer> selected;
+    private WatchListFrag watchListFrag;
+    public FragmentManager fragmentManager;
     WatchViewHolder watchViewHolder;
 
-    public PassListAdapter(Context context, List<ExamplePlayer> nPlayersList){
+    public PassListAdapter(Context context, List<ExamplePlayer> nPlayersList, FragmentManager fragmentManager){
         this.context = context;
         this.playersList = nPlayersList;
+        this.fragmentManager = fragmentManager;
+        //playerListFull = new ArrayList<>(playerListFull);
         selected = new ArrayList<>();
     }
     @NonNull
@@ -48,13 +59,17 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
         String pTeam = currentPlayer.getpTeam();
         String pPos = currentPlayer.getpPosition();
         boolean pCheck = currentPlayer.getpCheck();
+        String pId = currentPlayer.getpId();
 
         holder.pNameTextView.setText(pName);
         holder.pTeamTextView.setText(pTeam);
         holder.pPosTextView.setText(pPos);
-        holder.checkBox.setChecked(false); //set as false right now
+        holder.checkBox.setChecked(false);
+        holder.pIdTextView.setText(pId);
+        //set as false right now
 
         Picasso.with(context).load(pImageUrl).into(holder.pImageView);
+
 
 
     }
@@ -122,13 +137,13 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
 
 
 
-
     public class WatchViewHolder extends RecyclerView.ViewHolder {
-        private ImageView pImageView;
+        private ImageButton pImageView;
         private TextView pNameTextView;
         private TextView pTeamTextView;
         private TextView pPosTextView;
         private CheckBox checkBox;
+        private TextView pIdTextView;
 
         public WatchViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,6 +151,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
             pNameTextView = itemView.findViewById(R.id.name_view);
             pTeamTextView = itemView.findViewById(R.id.team_view);
             pPosTextView = itemView.findViewById(R.id.pos_view);
+            pIdTextView = itemView.findViewById(R.id.id_view);
 
             checkBox= itemView.findViewById(R.id.checkBox);
 
@@ -145,13 +161,9 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
                     int position = getLayoutPosition();
                     CheckBox c = (CheckBox)v;
                     if (c.isChecked()) {
-                        ExamplePlayer currentPlayer = playersList.get(position);
+
                         selected.add(position);
-                        //watchList.add(currentPlayer);
 
-
-                        //now add player to db
-                        //Toast.makeText(context, "Checked: " + selected, Toast.LENGTH_LONG).show();
                     }
                     else {
                         selected.remove(new Integer(position));
@@ -159,7 +171,64 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
                     }
                 }
             } );
+
+            pImageView.setOnClickListener(new View.OnClickListener(){
+               @Override
+               public void onClick(View v){
+                   Fragment playerDetails = PlayerDetailsFrag.newInstance();
+                   Bundle bundle = new Bundle();
+
+
+                   String pName = pNameTextView.getText().toString();
+                   String pTeam = pTeamTextView.getText().toString();
+                   String pPos = pPosTextView.getText().toString();
+                   String pId = pIdTextView.getText().toString();
+                   //String pUrl = pImageView.toString();
+                   bundle.putString("Name", pName);
+                   bundle.putString("Team", pTeam);
+                   bundle.putString("Position", pPos);
+                   bundle.putString("ID", pId);
+
+                   playerDetails.setArguments(bundle);
+                   fragmentManager.beginTransaction().replace(R.id.container_b,playerDetails)
+                           .commit();
+
+               }
+            });
         }
 
     }
+   /* @Override
+    public Filter getFilter(){
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter(){
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint){
+            List<ExamplePlayer> filteredList = new ArrayList<>();
+            if(constraint==null || constraint.length() == 0){
+                filteredList.addAll(playerListFull);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(ExamplePlayer player : playerListFull){
+                    if(player.getpName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(player);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results){
+            playersList.clear();
+            playersList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };*/
+
 }

@@ -9,10 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,9 +34,10 @@ import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 public class ReceiveListFrag extends Fragment {
     private RecyclerView recyclerView;
     private PassListAdapter adapter;
-    private ArrayList<ExamplePlayer> playersList;
-    private RequestQueue pRequestQueue;
-    private TextView textView;
+    private List<ExamplePlayer> playersList;
+    private PlayerViewModel viewModel;
+
+
 
     public static ReceiveListFrag newInstance() {
         return new ReceiveListFrag();
@@ -45,32 +51,55 @@ public class ReceiveListFrag extends Fragment {
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.pass_list_frag, container, false);
         Context context = view.getContext();
-        Button back = view.findViewById(R.id.back);
+        Button back = (Button) view.findViewById(R.id.back);
         //variable declarations
 
-        //retrofit stuff?
-
-        //recyclerView Stuff
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
+
         playersList = new ArrayList<>();
-
-
-
-        adapter = new PassListAdapter(context, playersList);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        viewModel = new ViewModelProvider(this.getActivity()).get(PlayerViewModel.class);
+        adapter = new PassListAdapter(context, playersList, fragmentManager);
         recyclerView.setAdapter(adapter);
+
         Content content = new Content();
         content.execute();
+
+        adapter.notifyDataSetChanged();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Integer> selected = adapter.getSelected();
+
+
+                int size = selected.size();
+                for(int i = 0; i<size; i++){
+                    ExamplePlayer targetPlayer = new ExamplePlayer();
+                    String playerIMG = adapter.getPlayerUrl(selected.get(i));
+                    String playerName = adapter.getPlayerName(selected.get(i));
+                    String playerTeam = adapter.getPlayerTeam(selected.get(i));
+                    String playerPos = adapter.getPlayerPos(selected.get(i));
+                    String playerId = adapter.getPlayerId(selected.get(i));
+                    targetPlayer.setpImageUrl(playerIMG);
+                    targetPlayer.setpName(playerName);
+                    targetPlayer.setpTeam(playerTeam);
+                    targetPlayer.setpPosition(playerPos);
+                    targetPlayer.setpId(playerId);
+                    targetPlayer.setpCheck(false);
+                    viewModel.insert(targetPlayer);
+                    Toast.makeText(getContext(), "Checked: " + playerName, Toast.LENGTH_LONG).show();
+
+                }
+                adapter.clearSelected();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+
 
         return view;
 
@@ -89,11 +118,7 @@ public class ReceiveListFrag extends Fragment {
     }
 
 
-    public void onSelect(View view) {
-        ArrayList<Integer> selected = adapter.getSelected();
-        textView.setText("You Selected: " + selected.toString());
-        //adapter.resetSelected();
-    }
+
 
     private class Content extends AsyncTask<Void, Void, Void>{
 

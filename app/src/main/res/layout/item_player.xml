@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/image_view"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/name_view"
@@ -30,6 +31,13 @@
         android:layout_height="match_parent"
         android:layout_weight = "1"
         android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/id_view"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:text="TextView"
+        />
 
     <CheckBox
         android:id="@+id/checkBox"

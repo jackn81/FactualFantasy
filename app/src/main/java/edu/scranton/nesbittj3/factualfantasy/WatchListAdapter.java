@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,7 +90,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     }
 
     public class WatchViewHolder extends RecyclerView.ViewHolder {
-        private ImageView pImageView;
+        private ImageButton pImageView;
         private TextView pNameTextView;
         private TextView pTeamTextView;
         private TextView pPosTextView;

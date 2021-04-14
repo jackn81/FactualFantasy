@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +38,7 @@ public class PassListFrag extends Fragment {
     private PassListAdapter adapter;
     private List<ExamplePlayer> playersList;
     private PlayerViewModel viewModel;
+    private SearchView searchView;
 
 
 
@@ -59,11 +62,29 @@ public class PassListFrag extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
 
+        //searchView.setQueryHint("Search Player");
+       //searchView = (SearchView) container.findViewById(R.id.action_search);
+       //String searchItem = searchView.getQuery().toString();
+
+       /* searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });*/
+
 
         playersList = new ArrayList<>();
-
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         viewModel = new ViewModelProvider(this.getActivity()).get(PlayerViewModel.class);
-        adapter = new PassListAdapter(context, playersList);
+
+        adapter = new PassListAdapter(context, playersList, fragmentManager);
         recyclerView.setAdapter(adapter);
 
         Content content = new Content();
@@ -125,12 +146,9 @@ public class PassListFrag extends Fragment {
                 String url = "https://www.espn.com/nfl/stats/player/_/table/passing/sort/passingYards/dir/desc";
 
                 Document doc = Jsoup.connect(url).get();
-
-
                 Elements data = doc.select("td.Table__TD");
 
                 int size = data.size();
-
                 for(int i = 0; i< 50; i ++){
 
                     String athleteName = data.select("a.AnchorLink")
@@ -138,9 +156,9 @@ public class PassListFrag extends Fragment {
                             .eq(i)
                             .text();
 
-                    String athleteID = data.select("a.AnchorLink")          //this is working, now
-                            .select("a")                                    //we just need the
-                            .eq(i)                                          //end of the string
+                    String athleteID = data.select("a.AnchorLink")
+                            .select("a")
+                            .eq(i)
                             .attr("data-player-uid");
 
                     String athleteTeam = data.select("span.pl2.n10.athleteCell__teamAbbrev")

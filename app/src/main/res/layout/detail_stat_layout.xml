@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/opp_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/result_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/cmp_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+
+    <TextView
+        android:id="@+id/patt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/pyds_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/cmpper_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/pavg_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"
+        />
+
+    <TextView
+        android:id="@+id/ptd_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/pInt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/pLng_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/sack_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rtg_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/qbr_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rAtt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rYds_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rAvg_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rTd_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+
+    <TextView
+        android:id="@+id/rLng_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="TextView"/>
+</LinearLayout>

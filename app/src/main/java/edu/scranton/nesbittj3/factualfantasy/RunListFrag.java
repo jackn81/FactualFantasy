@@ -9,21 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.RequestQueue;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +30,7 @@ public class RunListFrag extends Fragment {
     private PassListAdapter adapter;
     private List<ExamplePlayer> playersList;
     private PlayerViewModel viewModel;
+    private TextView textView2;
 
 
 
@@ -58,11 +53,13 @@ public class RunListFrag extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
-
+        textView2 = view.findViewById(R.id.textView2);
+        textView2.setText("NFL RUSHING LEADERS");
 
         playersList = new ArrayList<>();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         viewModel = new ViewModelProvider(this.getActivity()).get(PlayerViewModel.class);
+
         adapter = new PassListAdapter(context, playersList, fragmentManager);
         recyclerView.setAdapter(adapter);
 
@@ -92,7 +89,6 @@ public class RunListFrag extends Fragment {
                     targetPlayer.setpId(playerId);
                     targetPlayer.setpCheck(false);
                     viewModel.insert(targetPlayer);
-                    Toast.makeText(getContext(), "Checked: " + playerName, Toast.LENGTH_LONG).show();
 
                 }
                 adapter.clearSelected();
@@ -106,19 +102,6 @@ public class RunListFrag extends Fragment {
 
     }
 
-    private void parseJSON() {
-        String url = "";
-    }
-
-    public void createItems() {
-        playersList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            playersList.add(new ExamplePlayer(null, "player-", null, null, null, false));
-        }
-    }
-
-
-
     private class Content extends AsyncTask<Void, Void, Void>{
 
         @Override
@@ -128,10 +111,7 @@ public class RunListFrag extends Fragment {
 
                 Document doc = Jsoup.connect(url).get();
 
-
                 Elements data = doc.select("td.Table__TD");
-
-                int size = data.size();
 
                 for(int i = 0; i< 50; i ++){
 

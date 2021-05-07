@@ -1,22 +1,13 @@
 package edu.scranton.nesbittj3.factualfantasy;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -24,27 +15,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.RequestQueue;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
-import static android.app.Activity.RESULT_OK;
 
 
 public class WatchListFrag extends Fragment {
     private RecyclerView watchListRV;
     private PassListAdapter watchListAdapter;
     private List<ExamplePlayer> watchList;
-
     private Button rush;
     private Button pass;
     private Button receive;
     private Button remove;
+    private Button compare;
 
     private PlayerViewModel playerViewModel;
     
@@ -64,6 +47,7 @@ public class WatchListFrag extends Fragment {
         rush = (Button) view.findViewById(R.id.rush);
         receive = (Button) view.findViewById(R.id.receive);
         remove = (Button) view.findViewById(R.id.remove);
+        compare = (Button) view.findViewById(R.id.compare);
         //variable declarations
 
         //retrofit stuff?
@@ -80,30 +64,23 @@ public class WatchListFrag extends Fragment {
 
 
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        final ExamplePlayer empty = new ExamplePlayer();
+        List<ExamplePlayer> emptyList = new ArrayList<>();
+        emptyList.add(empty);
         watchListAdapter = new PassListAdapter(context, watchList, fragmentManager);
         watchListRV.setAdapter(watchListAdapter);
-
-        //Content content = new Content();
-        //content.execute();
         watchListAdapter.notifyDataSetChanged();
-
         playerViewModel = new ViewModelProvider(requireActivity()).get(PlayerViewModel.class);
 
         playerViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<ExamplePlayer>>() {
             @Override
             public void onChanged(List<ExamplePlayer> players) {
-
                 watchList.clear();
                 watchList.addAll(players);
-
                 watchListAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(),"onChanged", Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         pass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,25 +128,54 @@ public class WatchListFrag extends Fragment {
                     watchListAdapter.notifyDataSetChanged();
 
                 }
-                //selected.removeAll(selected);
                 watchListAdapter.clearSelected();
             }
         });
 
+        compare.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                ArrayList<Integer> selected = watchListAdapter.getSelected();
+                if(selected.size()==2) {
+                    ExamplePlayer player1 = watchList.get(selected.get(0));
+                    ExamplePlayer player2 = watchList.get(selected.get(1));
 
+                    Fragment compareFrag = CompareFrag.newInstance();
+                    Bundle bundle = new Bundle();
+
+                    String p1Name = player1.getpName();
+                    String p1Team = player1.getpTeam();
+                    String p1Pos = player1.getpPosition();
+                    String p1Id = player1.getpId();
+
+                    String p2Name = player2.getpName();
+                    String p2Team = player2.getpTeam();
+                    String p2Pos = player2.getpPosition();
+                    String p2Id = player2.getpId();
+
+                    bundle.putString("Name1", p1Name);
+                    bundle.putString("Team1", p1Team);
+                    bundle.putString("Position1", p1Pos);
+                    bundle.putString("ID1", p1Id);
+
+                    bundle.putString("Name2", p2Name);
+                    bundle.putString("Team2", p2Team);
+                    bundle.putString("Position2", p2Pos);
+                    bundle.putString("ID2", p2Id);
+
+                    compareFrag.setArguments(bundle);
+
+                    if(p1Pos.equals(p2Pos)) {
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container_b, compareFrag, "compareFrag")
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }
+            }
+        });
         return view;
-
-
     }
-
-    public void createItems() {
-        //watchList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            watchList.add(new ExamplePlayer(null, "player-", null, null, null, false));
-        }
-    }
-
-
-
 }
 

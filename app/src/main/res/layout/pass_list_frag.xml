@@ -7,24 +7,12 @@
     android:layout_height="match_parent">
 
 
-    <SearchView
-        android:id="@+id/action_search"
-        android:layout_width="416dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="340dp"
-        android:layout_marginBottom="10dp"
-        android:title="Search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showAsAction="always" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="410dp"
-        android:layout_height="281dp"
+        android:layout_width="394dp"
+        android:layout_height="275dp"
         android:layout_marginTop="367dp"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +30,18 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.493" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

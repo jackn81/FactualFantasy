@@ -2,19 +2,15 @@ package edu.scranton.nesbittj3.factualfantasy;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
-//import edu.scranton.nesbittj3.factualfantasy.model.Converters;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 @Database(entities = ExamplePlayer.class, version = 7)
-//@TypeConverters({Converters.class})
+
 public abstract class PlayerDatabase extends RoomDatabase {
 
     private static PlayerDatabase instance;

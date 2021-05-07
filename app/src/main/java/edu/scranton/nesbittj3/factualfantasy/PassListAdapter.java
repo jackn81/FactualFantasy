@@ -21,32 +21,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
 
-public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder>  {
+public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchViewHolder> implements Filterable {
     private Context context;
     private List<ExamplePlayer> playersList;
-    //private List<ExamplePlayer> playerListFull;
-    private TextView textView;
+    private List<ExamplePlayer> playersListFull;
     private ArrayList<Integer> selected;
-    private WatchListFrag watchListFrag;
     public FragmentManager fragmentManager;
-    WatchViewHolder watchViewHolder;
+
 
     public PassListAdapter(Context context, List<ExamplePlayer> nPlayersList, FragmentManager fragmentManager){
         this.context = context;
         this.playersList = nPlayersList;
         this.fragmentManager = fragmentManager;
-        //playerListFull = new ArrayList<>(playerListFull);
+
         selected = new ArrayList<>();
     }
     @NonNull
     @Override
     public WatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_player, parent, false);
-        //watchViewHolder = new WatchViewHolder(view); //might not need this?
         return new WatchViewHolder(view);
     }
 
@@ -94,21 +92,8 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
         selected.clear();
     }
 
-    public Boolean containsPlayer(ExamplePlayer player){
-        Boolean result = false;
-        for(int i = 0; i<playersList.size(); i++){
-            if(playersList.contains(player)){
-                result = true;
-            }else {
-                result = false;
-            }
-        }
-        return result;
-    }
 
-    public ExamplePlayer getPlayer(int position){
-        return playersList.get(position);
-    }
+
 
     public String getPlayerName(int position){
         ExamplePlayer currentPlayer = playersList.get(position);
@@ -135,6 +120,42 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
         return currentPlayer.getpId();
     }
 
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter(){
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<ExamplePlayer> filteredList = new ArrayList<>();
+
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(playersListFull);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(ExamplePlayer player : playersListFull){
+                    if(player.getpName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(player);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            playersList.clear();
+            playersList.addAll((List) results.values);
+
+            notifyDataSetChanged();
+        }
+    };
 
 
     public class WatchViewHolder extends RecyclerView.ViewHolder {
@@ -161,13 +182,10 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
                     int position = getLayoutPosition();
                     CheckBox c = (CheckBox)v;
                     if (c.isChecked()) {
-
                         selected.add(position);
-
                     }
                     else {
                         selected.remove(new Integer(position));
-                        Toast.makeText(context, "UnChecked: " + selected, Toast.LENGTH_LONG).show();
                     }
                 }
             } );
@@ -183,7 +201,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
                    String pTeam = pTeamTextView.getText().toString();
                    String pPos = pPosTextView.getText().toString();
                    String pId = pIdTextView.getText().toString();
-                   //String pUrl = pImageView.toString();
+
                    bundle.putString("Name", pName);
                    bundle.putString("Team", pTeam);
                    bundle.putString("Position", pPos);
@@ -198,37 +216,6 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.WatchV
         }
 
     }
-   /* @Override
-    public Filter getFilter(){
-        return exampleFilter;
-    }
 
-    private Filter exampleFilter = new Filter(){
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint){
-            List<ExamplePlayer> filteredList = new ArrayList<>();
-            if(constraint==null || constraint.length() == 0){
-                filteredList.addAll(playerListFull);
-            }else{
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for(ExamplePlayer player : playerListFull){
-                    if(player.getpName().toLowerCase().contains(filterPattern)){
-                        filteredList.add(player);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results){
-            playersList.clear();
-            playersList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };*/
 
 }

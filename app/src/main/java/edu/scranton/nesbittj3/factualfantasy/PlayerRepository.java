@@ -1,20 +1,12 @@
 package edu.scranton.nesbittj3.factualfantasy;
-
 import android.app.Application;
 import android.os.AsyncTask;
-
 import androidx.lifecycle.LiveData;
-import androidx.room.TypeConverters;
-
-import java.util.ArrayList;
 import java.util.List;
-
-//import edu.scranton.nesbittj3.factualfantasy.model.Converters;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
-//@TypeConverters({Converters.class})
+
 public class PlayerRepository {
     private PlayerDao playerDao;
-    private PlayerDatabase playerDB;
     private LiveData<List<ExamplePlayer>> allPlayers;
 
     public PlayerRepository(Application application){

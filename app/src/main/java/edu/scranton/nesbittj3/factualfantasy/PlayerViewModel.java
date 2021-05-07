@@ -1,12 +1,9 @@
 package edu.scranton.nesbittj3.factualfantasy;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;

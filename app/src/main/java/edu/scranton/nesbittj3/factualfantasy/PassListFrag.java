@@ -1,18 +1,14 @@
 package edu.scranton.nesbittj3.factualfantasy;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import androidx.fragment.app.Fragment;
@@ -21,24 +17,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.RequestQueue;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import java.util.List;
 import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 
-import static android.app.Activity.RESULT_OK;
 
-
+@SuppressWarnings("ALL")
 public class PassListFrag extends Fragment {
     private RecyclerView recyclerView;
     private PassListAdapter adapter;
     private List<ExamplePlayer> playersList;
+    private String exampleSearchItem;
     private PlayerViewModel viewModel;
-    private SearchView searchView;
+    private TextView textView2;
+
 
 
 
@@ -61,24 +55,8 @@ public class PassListFrag extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager((context)));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
-
-        //searchView.setQueryHint("Search Player");
-       //searchView = (SearchView) container.findViewById(R.id.action_search);
-       //String searchItem = searchView.getQuery().toString();
-
-       /* searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });*/
-
+        textView2 = view.findViewById(R.id.textView2);
+        textView2.setText("NFL PASSING LEADERS");
 
         playersList = new ArrayList<>();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -97,7 +75,6 @@ public class PassListFrag extends Fragment {
             public void onClick(View v) {
                 ArrayList<Integer> selected = adapter.getSelected();
 
-
                 int size = selected.size();
                 for(int i = 0; i<size; i++){
                     ExamplePlayer targetPlayer = new ExamplePlayer();
@@ -113,18 +90,12 @@ public class PassListFrag extends Fragment {
                     targetPlayer.setpId(playerId);
                     targetPlayer.setpCheck(false);
                     viewModel.insert(targetPlayer);
-                    Toast.makeText(getContext(), "Checked: " + playerName, Toast.LENGTH_LONG).show();
-
                 }
                 adapter.clearSelected();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-
-
         return view;
-
-
     }
 
     private void parseJSON() {
@@ -134,8 +105,6 @@ public class PassListFrag extends Fragment {
 
     public void onSelect(View view) {
         ArrayList<Integer> selected = adapter.getSelected();
-        Toast.makeText(this.getContext(), "Checked: " + selected, Toast.LENGTH_LONG).show();
-
     }
 
     private class Content extends AsyncTask<Void, Void, Void>{
@@ -178,6 +147,7 @@ public class PassListFrag extends Fragment {
 
                     playersList.add(new ExamplePlayer(imgURL, athleteName, athleteTeam, athletePosition, athleteID, false));
 
+
                 }
             }catch(IOException e){
                 e.printStackTrace();;
@@ -200,9 +170,6 @@ public class PassListFrag extends Fragment {
         protected void onCancelled() {
             super.onCancelled();
         }
-
-
     }
-
 
 }

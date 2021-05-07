@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="126dp"
+        android:layout_width="92dp"
+        android:layout_height="83dp"
         android:layout_marginTop="375dp"
         android:layout_marginBottom="174dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,9 +24,10 @@
         android:layout_width="129dp"
         android:layout_height="63dp"
         android:text="playerName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.561" />
@@ -36,6 +37,7 @@
         android:layout_width="129dp"
         android:layout_height="63dp"
         android:text="playerID"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -44,15 +46,17 @@
         app:layout_constraintVertical_bias="0.561" />
 
     <TextView
-    android:id="@+id/player_team"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="274dp"
-    android:text="TextView"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/player_pos"
-    app:layout_constraintStart_toEndOf="@+id/imageView"
-    app:layout_constraintTop_toBottomOf="@+id/player_name" />
+        android:id="@+id/player_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="274dp"
+        android:text="TextView"
+        android:padding="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/player_pos"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/player_name" />
 
     <TextView
         android:id="@+id/player_pos"
@@ -61,12 +65,14 @@
         android:layout_marginEnd="168dp"
         android:layout_marginBottom="274dp"
         android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/player_team"
         app:layout_constraintTop_toBottomOf="@+id/player_name" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
         android:layout_width="396dp"
         android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,4 +94,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
     </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="372dp"
+        android:layout_marginEnd="16dp"
+        android:text="twitter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

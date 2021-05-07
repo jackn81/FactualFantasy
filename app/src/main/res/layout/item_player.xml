@@ -16,28 +16,31 @@
         android:layout_width="130dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/pos_view"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:layout_weight = "1"
-        android:text="TextView"/>
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/team_view"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:layout_weight = "1"
-        android:text="TextView"/>
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/id_view"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:text="TextView"
-        />
+        android:visibility="invisible" />
 
     <CheckBox
         android:id="@+id/checkBox"

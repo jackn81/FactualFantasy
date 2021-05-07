@@ -63,15 +63,12 @@ public class TweetFrag extends Fragment {
 
         textViewResult = view.findViewById(R.id.text_view_result);
 
-
         RV = (RecyclerView) view.findViewById(R.id.RV);
-        //watchListRV.setHasFixedSize(true);
+
         RV.setLayoutManager(new LinearLayoutManager((context)));
         RV.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
-        //RV.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL));
 
         tweetList = new ArrayList<>();
-
 
         tweetListAdapter = new TweetListAdapter(context, tweetList);
         RV.setAdapter(tweetListAdapter);
@@ -82,9 +79,6 @@ public class TweetFrag extends Fragment {
         Content content = new Content();
         content.execute();
         tweetListAdapter.notifyDataSetChanged();
-
-
-
 
         return view;
     }
@@ -109,7 +103,7 @@ public class TweetFrag extends Fragment {
                 TwitterFactory tf = new TwitterFactory(cb.build());
                 Twitter twitter = tf.getInstance();
 
-                //twitter = TwitterFactory.getSingleton();
+
                 Query query = new Query(firstName + " " + lastName);
                 QueryResult result = null;
                 try {
@@ -117,7 +111,7 @@ public class TweetFrag extends Fragment {
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
-                //tweetList.add((twitter4j.Status) result);
+
                 for (twitter4j.Status status : result.getTweets()) {
 
                     System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
@@ -127,12 +121,8 @@ public class TweetFrag extends Fragment {
                     tweetList.add(new Tweet(userName, null, tweet));
                 }
 
-                /*for(int i =0; i<50; i++){
-                    tweetList.add((Tweet) result);
-                }*/
                 Log.d("abc", "result: " + result.toString() );
                 Log.d("abcc", "resulttweets: " + result.getTweets().toString() );
-
 
                 } catch (Exception ex) {
                 ex.printStackTrace();

@@ -8,21 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +38,8 @@ public class PlayerDetailsFrag extends Fragment {
     String pPos;
     private PlayerDetailsAdapter adapter;
     List<ExampleStats> exampleStats;
+    Button compare;
+    Button twitter;
 
     public static PlayerDetailsFrag newInstance() {
         return new PlayerDetailsFrag();
@@ -54,25 +53,22 @@ public class PlayerDetailsFrag extends Fragment {
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.details_frag, container, false);
         Context context = view.getContext();
-        //exampleStats = new ArrayList();
+
         player_name = view.findViewById(R.id.player_name);
         playerId = view.findViewById(R.id.player_id);
         imageView = view.findViewById(R.id.imageView);
         player_pos = view.findViewById(R.id.player_pos);
         player_team = view.findViewById(R.id.player_team);
-
+        compare = view.findViewById(R.id.compare);
+        twitter = view.findViewById(R.id.twitter);
         exampleStats = new ArrayList<>();
 
         recyclerView2 = (RecyclerView) view.findViewById(R.id.recyclerView2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager((context)));
-        recyclerView2.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
-
-
+        recyclerView2.setLayoutManager(new GridLayoutManager((context), 1));
+        recyclerView2.addItemDecoration(new DividerItemDecoration(context, GridLayoutManager.HORIZONTAL));
 
         adapter = new PlayerDetailsAdapter(context, exampleStats);
         recyclerView2.setAdapter(adapter);
-
-
 
         Content content = new Content();
         content.execute();
@@ -92,6 +88,36 @@ public class PlayerDetailsFrag extends Fragment {
             Picasso.with(context).load(imgURL).into(imageView);
         }
 
+        twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment tweetFrag = TweetFrag.newInstance();
+                Bundle bundle = new Bundle();
+                String lastName = "";
+                String firstName = "";
+                String name = player_name.getText().toString();
+
+                if(name.split("\\w+").length>1){
+                    lastName = name.substring(name.lastIndexOf(" ")+1);
+                    firstName = name.substring(0, name.lastIndexOf(' '));
+                }
+                else{
+                    firstName = name;
+                }
+
+                bundle.putString("FirstName", firstName);
+                bundle.putString("LastName", lastName);
+
+                tweetFrag.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_b, tweetFrag, "tweetFrag")
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
         return view;
     }
 
@@ -109,10 +135,9 @@ public class PlayerDetailsFrag extends Fragment {
                 Elements data = doc.select("tbody");
 
                 Elements check = doc.select("thead");
-                Elements check2 = doc.select("ul");
-                //check2.toString().contains("QB")
+
                 if (pPos.contains("QB")) {
-                    exampleStats.add(new ExampleStats("DATE", "        OPP", "       RES", "    CMP", "PATT",
+                    exampleStats.add(new ExampleStats("DATE", "       OPP", "RES", "CMP", "PATT",
                             "PYDS", "CMP%", "PAVG", "PTD", "INT", "PLNG",
                             "SACK", "RTG", "QBR", "RATT", "RYDS", "RAVG", "RTD", "RLNG"));
 
@@ -201,7 +226,7 @@ public class PlayerDetailsFrag extends Fragment {
                     ///////////
 
                 }else if (pPos.contains("RB")) {
-                    exampleStats.add(new ExampleStats("DATE", "        OPP", "       RES", "       ATT", "RYDS",
+                    exampleStats.add(new ExampleStats("DATE", "       OPP", "RES", "ATT", "RYDS",
                             "RAVG", "RTD", "RLNG", "REC", "TGTS", "RECYDS",
                             "RECAVG", "RECTD", "RECLNG", "FUM", "LST", "FF", "KB", null));
                     if (check.select("tr").select("th").get(0).text().contains("Regular Season")) {
@@ -283,6 +308,11 @@ public class PlayerDetailsFrag extends Fragment {
                         }
                     }
                 }else if(pPos.contains("WR")) {
+
+                    exampleStats.add(new ExampleStats("DATE", "        OPP", "RES", "REC", "TGTS",
+                            "RECYDS", "AVG", "RECTD", "RECLNG", "ATT", "RYDS",
+                            "RAVG", "RLNG", "RECLNG", "FUM", "LST", "FF", "KB", null));
+
                     if (check.select("tr").select("th").get(0).text().contains("Regular Season")) {
 
                         Elements tr = data.select("tr");
@@ -363,11 +393,9 @@ public class PlayerDetailsFrag extends Fragment {
                 }
                 }catch(IOException e){
                     e.printStackTrace();
-                    ;
                 }
                 return null;
             }
-
 
             @Override
             protected void onPreExecute () {

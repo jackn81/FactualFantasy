@@ -1,42 +1,49 @@
 package edu.scranton.nesbittj3.factualfantasy;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.scranton.nesbittj3.factualfantasy.model.ExamplePlayer;
 import edu.scranton.nesbittj3.factualfantasy.model.ExampleStats;
 
+public class CompareFragAdapter extends RecyclerView.Adapter<CompareFragAdapter.WatchViewHolder>{
 
-public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdapter.WatchViewHolder>  {
-    private Context context;
-    private List<ExampleStats> statsList;
-    private ArrayList<Integer> selected;
+    Context context;
+    List<ExampleStats> statsList;
 
 
-    public PlayerDetailsAdapter(Context context, List<ExampleStats> statsList){
+    public CompareFragAdapter(Context context, List<ExampleStats> statsList){
         this.context = context;
         this.statsList = statsList;
-        selected = new ArrayList<>();
     }
+
     @NonNull
     @Override
     public WatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.detail_stat_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.compare_frag_layout, parent, false);
         return new WatchViewHolder(view);
+    }
+
+    public void setStatsList(List<ExampleStats> stats){
+        this.statsList = stats;
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(@NonNull WatchViewHolder holder, int position) {
         ExampleStats currentRow = statsList.get(position);
 
-        String rDate = currentRow.getDate();
-        String rOpp = currentRow.getOpp();
-        String rResult = currentRow.getResult();
         String rCmp = currentRow.getCmp();
         String pAtt = currentRow.getpAtt();
         String pYds = currentRow.getpYds();
@@ -54,9 +61,7 @@ public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdap
         String rTd = currentRow.getrTd();
         String rLng = currentRow.getrLng();
 
-        holder.dateView.setText(rDate);
-        holder.oppView.setText(rOpp);
-        holder.resView.setText(rResult);
+
         holder.compView.setText(rCmp);
         holder.pAttView.setText(pAtt);
         holder.pYdsView.setText(pYds);
@@ -74,14 +79,6 @@ public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdap
         holder.rTdView.setText(rTd);
         holder.rLngView.setText(rLng);
 
-        if(position %2 == 1)
-        {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        else
-        {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FFFAF8FD"));
-        }
 
     }
 
@@ -91,9 +88,7 @@ public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdap
     }
 
     public class WatchViewHolder extends RecyclerView.ViewHolder {
-        private TextView dateView;
-        private TextView oppView;
-        private TextView resView;
+
         private TextView compView;
         private TextView pAttView;
         private TextView pYdsView;
@@ -113,9 +108,6 @@ public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdap
 
         public WatchViewHolder(@NonNull View itemView) {
             super(itemView);
-            dateView = itemView.findViewById(R.id.date_view);
-            oppView = itemView.findViewById(R.id.opp_view);
-            resView = itemView.findViewById(R.id.result_view);
             compView = itemView.findViewById(R.id.cmp_view);
             pAttView = itemView.findViewById(R.id.patt_view);
             pYdsView = itemView.findViewById(R.id.pyds_view);
@@ -133,9 +125,6 @@ public class PlayerDetailsAdapter extends RecyclerView.Adapter<PlayerDetailsAdap
             rYdsView = itemView.findViewById(R.id.rYds_view);
             rTdView = itemView.findViewById(R.id.rTd_view);
             rLngView = itemView.findViewById(R.id.rLng_view);
-
         }
-
     }
-
 }
